@@ -5,3 +5,35 @@ jwt:
   secret_key: 'BOMA2F73GIHHVOYK7I42'
   signOptions:
     expiresIn: '3600s'
+planet:
+  size: number
+  obstaclesNumber: number
+  behaviorMove:
+    - cardinal: 'N'
+      axis: 'y'
+      command: 
+        - type: 'F'
+          direction: 0
+        - type: 'B'
+          direction: 1
+    - cardinal: 'E'
+      axis: 'x'
+      command: 
+        - type: 'F'
+          direction: 0
+        - type: 'B'
+          direction: 1
+    - cardinal: 'S'
+      axis: 'y'
+      command: 
+        - type: 'F'
+          direction: 1
+        - type: 'B'
+          direction: 0
+    - cardinal: 'W'
+      axis: 'x'
+      command: 
+        - type: 'F'
+          direction: 1
+        - type: 'B'
+          direction: 0

@@ -58,3 +58,17 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
+## Create Module
+
+```bash
+# generate module
+$ nest g module cats
+
+# generate controller
+$ nest g controller cats
+
+# generate provider
+$ nest g service cats
+```
+
+
