@@ -7,7 +7,7 @@ import { RoverModel } from "../model/rover.model";
 import { PlanetConfigService } from './planet-config.service';
 
 @Injectable()
-export class PlanetService {
+export class PlanetRenderService {
     planet: PlanetConfigModel = this.planetConfigService.config;
     private _rover: RoverModel;
     private _cardinals: DirectionModel[] = [];

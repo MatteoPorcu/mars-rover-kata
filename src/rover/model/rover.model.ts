@@ -2,7 +2,7 @@ import { classToClass } from 'class-transformer';
 import { BehaviorMoveConfigModel } from '../../common/model/planet-config.model';
 import { Move, MoveCommand } from "./command.model";
 import { CoordinatesModel } from './coordinates.model';
-import { BehaviorDirectionModel, DirectionEnum, DirectionModel } from "./direction.model";
+import { DirectionEnum, DirectionModel } from "./direction.model";
 
 export class RoverModel extends Move {
     private _currentCoordinates: CoordinatesModel;
@@ -16,30 +16,33 @@ export class RoverModel extends Move {
     ) {
         super();
         this._behaviorMoveConfig = behaviorMoveConfig;
-        console.log(this.behaviorMoveConfig[0].command, "prova");
         this.currentCoordinates = coordinates;
         this.populateDirectionsBehavior();
-        this.currentDirection = this.directionsBehavior.find(directionConfig => {
-            return directionConfig.cardinal === direction
-        });
+        this.populateCurrentDirection(direction);
     }
 
     private populateDirectionsBehavior(): DirectionModel[] {
         this.directionsBehavior = classToClass(this.behaviorMoveConfig);
-        this.directionsBehavior.forEach(behaviorCommand =>{
-            behaviorCommand.command.map(behavior =>{ 
+        this.directionsBehavior.forEach(behaviorCommand => {
+            behaviorCommand.command.map(behavior => {
                 behavior.function = behavior.direction
-                                ? (axis) => this.increase(axis)
-                                : (axis) => this.decrease(axis)
+                    ? (axis) => this.increase(axis)
+                    : (axis) => this.decrease(axis)
                 return behavior
-                        
+
             });
         });
         return this.directionsBehavior;
     }
 
+    private populateCurrentDirection(direction: DirectionEnum) {
+        this.currentDirection = this.directionsBehavior.find(directionConfig => {
+            return directionConfig.cardinal === direction
+        });
+    }
+
     moveByDirection(moveCommand: MoveCommand): CoordinatesModel {
-        let predictiveCoordinate: CoordinatesModel = {...this.currentCoordinates};
+        let predictiveCoordinate: CoordinatesModel = { ...this.currentCoordinates };
         let currentCommand = this.currentDirection.command.find(current => {
             return current.type === moveCommand
         });
