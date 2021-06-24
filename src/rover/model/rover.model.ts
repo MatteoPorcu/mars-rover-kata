@@ -28,7 +28,7 @@ export class RoverModel extends Move {
         this.directionsBehavior = classToClass(this.behaviorMoveConfig);
         this.directionsBehavior.forEach(behaviorCommand =>{
             behaviorCommand.command.map(behavior =>{ 
-                behavior.function = behavior.type
+                behavior.function = behavior.direction
                                 ? (axis) => this.increase(axis)
                                 : (axis) => this.decrease(axis)
                 return behavior
