@@ -13,9 +13,9 @@ export class PlanetRenderService {
   private _cardinals: DirectionModel[] = [];
 
   constructor(private planetConfigService: PlanetConfigService) {
-    // this.populateRover({ x: 6, y: 10 }, DirectionEnum.NORTH);
-    // console.log(this.rover.currentDirection);
-    // this.move(CommandEnum.FORWARD);
+    this.populateRover({ x: 6, y: 10 }, DirectionEnum.NORTH);
+    console.log(this.rover.currentDirection);
+    this.move(CommandEnum.FORWARD);
   }
 
   populateRover(coordinates: CoordinatesModel, direction: DirectionEnum) {
