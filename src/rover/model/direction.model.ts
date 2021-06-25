@@ -2,7 +2,7 @@ import {
   BehaviorMoveConfigModel,
   CommandConfigModel,
 } from '../../common/model/planet-config.model';
-import { CommandEnum, Move } from './command.model';
+import { Move } from './command.model';
 
 export enum DirectionEnum {
   NORTH = 'N',

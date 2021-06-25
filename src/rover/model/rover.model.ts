@@ -9,16 +9,18 @@ export class RoverModel extends Move {
   private _currentDirection: DirectionModel;
   protected _directionsBehavior: DirectionModel[] = [];
   private _behaviorMoveConfig: BehaviorMoveConfigModel[];
-  private _stepMove: any;
+  private _currentStepMove: CoordinatesModel;
 
   constructor(
     coordinates: CoordinatesModel,
     direction: DirectionEnum,
     behaviorMoveConfig: BehaviorMoveConfigModel[],
+    stepMove: CoordinatesModel = { x: 1, y: 1 },
   ) {
     super();
     this._behaviorMoveConfig = behaviorMoveConfig;
     this.currentCoordinates = coordinates;
+    this.currentStepMove = stepMove;
     this.populateDirectionsBehavior();
     this.populateCurrentDirection(direction);
   }
@@ -41,6 +43,12 @@ export class RoverModel extends Move {
   set directionsBehavior(value: DirectionModel[]) {
     this._directionsBehavior = value;
   }
+  public get currentStepMove(): CoordinatesModel {
+    return this._currentStepMove;
+  }
+  public set currentStepMove(value: CoordinatesModel) {
+    this._currentStepMove = value;
+  }
   get behaviorMoveConfig(): BehaviorMoveConfigModel[] {
     return this._behaviorMoveConfig;
   }
@@ -50,8 +58,8 @@ export class RoverModel extends Move {
     this.directionsBehavior.forEach((behaviorCommand) => {
       behaviorCommand.command.map((behavior) => {
         behavior.function = behavior.direction
-          ? (axis) => this.decreaseCoordinate(axis)
-          : (axis) => this.increaseCoordinate(axis);
+          ? (axis, stepMove) => this.decreaseCoordinate(axis, stepMove)
+          : (axis, stepMove) => this.increaseCoordinate(axis, stepMove);
         return behavior;
       });
     });
@@ -73,15 +81,16 @@ export class RoverModel extends Move {
     });
     predictiveCoordinate[this.currentDirection.axis] = currentCommand.function(
       predictiveCoordinate[this.currentDirection.axis],
+      this.currentStepMove[this.currentDirection.axis],
     );
     return predictiveCoordinate;
   }
 
-  increaseCoordinate(point: number): number {
-    return point + 1;
+  increaseCoordinate(point: number, stepMove: number): number {
+    return point + stepMove;
   }
 
-  decreaseCoordinate(point: number): number {
-    return point - 1;
+  decreaseCoordinate(point: number, stepMove: number): number {
+    return point - stepMove;
   }
 }
