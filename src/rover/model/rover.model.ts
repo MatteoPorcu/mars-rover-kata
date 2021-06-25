@@ -9,6 +9,7 @@ export class RoverModel extends Move {
   private _currentDirection: DirectionModel;
   protected _directionsBehavior: DirectionModel[] = [];
   private _behaviorMoveConfig: BehaviorMoveConfigModel[];
+  private _stepMove: any;
 
   constructor(
     coordinates: CoordinatesModel,
