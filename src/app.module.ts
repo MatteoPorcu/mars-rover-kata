@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { getConfiguration } from '../config/configuration';
-import { AppConfigService } from "./app-config.service";
+import { AppConfigService } from './app-config.service';
 import { RoverModule } from './rover/rover.module';
 
 @Module({
@@ -15,4 +15,4 @@ import { RoverModule } from './rover/rover.module';
   controllers: [],
   providers: [AppConfigService],
 })
-export class AppModule { }
+export class AppModule {}
