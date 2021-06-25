@@ -1,8 +1,12 @@
 import { classToClass } from 'class-transformer';
 import { BehaviorMoveConfigModel } from '../../common/model/planet-config.model';
-import { Move, MoveCommand } from './command.model';
+import { Move, MoveCommand, TurnCommand, CommandEnum } from './command.model';
 import { CoordinatesModel } from './coordinates.model';
-import { DirectionEnum, DirectionModel } from './direction.model';
+import {
+  DirectionEnum,
+  DirectionModel,
+  BehaviorDirectionModel,
+} from './direction.model';
 
 export class RoverModel extends Move {
   private _currentCoordinates: CoordinatesModel;
@@ -76,9 +80,7 @@ export class RoverModel extends Move {
     const predictiveCoordinate: CoordinatesModel = {
       ...this.currentCoordinates,
     };
-    const currentCommand = this.currentDirection.command.find((current) => {
-      return current.type === moveCommand;
-    });
+    const currentCommand = this.retrieveCurrentCommand(moveCommand);
     predictiveCoordinate[this.currentDirection.axis] = currentCommand.function(
       predictiveCoordinate[this.currentDirection.axis],
       this.currentStepMove[this.currentDirection.axis],
@@ -92,5 +94,16 @@ export class RoverModel extends Move {
 
   decreaseCoordinate(point: number, stepMove: number): number {
     return point - stepMove;
+  }
+
+  changeDirection(moveCommand: TurnCommand) {
+    const currentCommand = this.retrieveCurrentCommand(moveCommand);
+    this.populateCurrentDirection(currentCommand.cardinal);
+  }
+
+  retrieveCurrentCommand(moveCommand: CommandEnum): BehaviorDirectionModel {
+    return this.currentDirection.command.find((current) => {
+      return current.type === moveCommand;
+    });
   }
 }

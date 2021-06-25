@@ -16,6 +16,10 @@ planet:
           direction: 0
         - type: 'B'
           direction: 1
+        - type: 'R'
+          cardinal: 'E'
+        - type: 'L'
+          cardinal: 'W'
     - cardinal: 'E'
       axis: 'x'
       command: 
@@ -23,6 +27,10 @@ planet:
           direction: 0
         - type: 'B'
           direction: 1
+        - type: 'R'
+          cardinal: 'S'
+        - type: 'L'
+          cardinal: 'N'
     - cardinal: 'S'
       axis: 'y'
       command: 
@@ -30,6 +38,10 @@ planet:
           direction: 1
         - type: 'B'
           direction: 0
+        - type: 'R'
+          cardinal: 'W'
+        - type: 'L'
+          cardinal: 'E'  
     - cardinal: 'W'
       axis: 'x'
       command: 
@@ -37,3 +49,7 @@ planet:
           direction: 1
         - type: 'B'
           direction: 0
+        - type: 'R'
+          cardinal: 'N'
+        - type: 'L'
+          cardinal: 'S'

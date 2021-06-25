@@ -15,7 +15,8 @@ export class PlanetRenderService {
   constructor(private planetConfigService: PlanetConfigService) {
     this.populateRover({ x: 3, y: 2 }, DirectionEnum.WEST, { x: 3, y: 3 });
     console.log(this.rover.currentDirection);
-    this.move(CommandEnum.FORWARD);
+    this.move(CommandEnum.BACKWARD);
+    this.move(CommandEnum.TURN_LEFT);
   }
 
   populateRover(
@@ -41,15 +42,22 @@ export class PlanetRenderService {
 
   move(moveCommand: CommandEnum) {
     switch (moveCommand) {
-      case CommandEnum.FORWARD || CommandEnum.BACKWARD: {
+      case CommandEnum.FORWARD:
+      case CommandEnum.BACKWARD: {
         const predictiveMove = this.rover.moveByDirection(moveCommand);
         console.log(predictiveMove, this.rover.currentCoordinates);
         this.rover.currentCoordinates = this.limitPlanetSize(predictiveMove);
         console.log('limitPlanet', this.rover.currentCoordinates);
         break;
       }
-      case CommandEnum.TURN_RIGHT || CommandEnum.TURN_LEFT: {
-        // this.rover.predictiveMove();
+      case CommandEnum.TURN_RIGHT:
+      case CommandEnum.TURN_LEFT: {
+        this.rover.changeDirection(moveCommand);
+        console.log('changeDirection', this.rover.currentDirection);
+        break;
+      }
+      default: {
+        console.log(moveCommand);
         break;
       }
     }

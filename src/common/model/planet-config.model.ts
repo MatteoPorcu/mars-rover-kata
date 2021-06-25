@@ -22,5 +22,6 @@ export class BehaviorMoveConfigModel {
 
 export class CommandConfigModel {
   type: CommandEnum;
-  direction: BehaviorTypeEnum;
+  direction?: BehaviorTypeEnum;
+  cardinal?: DirectionEnum;
 }
