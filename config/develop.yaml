@@ -6,8 +6,8 @@ jwt:
   signOptions:
     expiresIn: '3600s'
 planet:
-  size: number
-  obstaclesNumber: number
+  size: 10
+  obstaclesNumber: 10
   behaviorMove:
     - cardinal: 'N'
       axis: 'y'

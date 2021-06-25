@@ -49,8 +49,8 @@ export class RoverModel extends Move {
     this.directionsBehavior.forEach((behaviorCommand) => {
       behaviorCommand.command.map((behavior) => {
         behavior.function = behavior.direction
-          ? (axis) => this.increase(axis)
-          : (axis) => this.decrease(axis);
+          ? (axis) => this.decreaseCoordinate(axis)
+          : (axis) => this.increaseCoordinate(axis);
         return behavior;
       });
     });
@@ -76,11 +76,11 @@ export class RoverModel extends Move {
     return predictiveCoordinate;
   }
 
-  increase(point: number): number {
+  increaseCoordinate(point: number): number {
     return point + 1;
   }
 
-  decrease(point: number): number {
+  decreaseCoordinate(point: number): number {
     return point - 1;
   }
 }

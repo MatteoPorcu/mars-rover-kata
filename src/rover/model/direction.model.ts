@@ -22,7 +22,9 @@ export enum BehaviorTypeEnum {
 }
 
 export class BehaviorDirectionModel extends CommandConfigModel {
-  function?: typeof Move.prototype.increase | typeof Move.prototype.decrease;
+  function?:
+    | typeof Move.prototype.increaseCoordinate
+    | typeof Move.prototype.decreaseCoordinate;
 }
 
 export class DirectionModel extends BehaviorMoveConfigModel {
