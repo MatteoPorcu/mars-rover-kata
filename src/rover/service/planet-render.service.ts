@@ -13,16 +13,21 @@ export class PlanetRenderService {
   private _cardinals: DirectionModel[] = [];
 
   constructor(private planetConfigService: PlanetConfigService) {
-    this.populateRover({ x: 6, y: 10 }, DirectionEnum.NORTH);
+    this.populateRover({ x: 3, y: 2 }, DirectionEnum.WEST, { x: 3, y: 3 });
     console.log(this.rover.currentDirection);
     this.move(CommandEnum.FORWARD);
   }
 
-  populateRover(coordinates: CoordinatesModel, direction: DirectionEnum) {
+  populateRover(
+    coordinates: CoordinatesModel,
+    direction: DirectionEnum,
+    stepMove?: CoordinatesModel,
+  ) {
     this._rover = new RoverModel(
       coordinates,
       direction,
       this.planet.behaviorMove,
+      stepMove,
     );
   }
 
@@ -55,10 +60,12 @@ export class PlanetRenderService {
     const copyCoordinates: CoordinatesModel = { ...coordinates };
     Object.keys(copyCoordinates).forEach((key: string) => {
       if (copyCoordinates[key] > this.planet.size) {
-        dif = copyCoordinates[key] - this.planet.size;
+        // added minus one to the difference to align the calculation to starting from zero
+        dif = copyCoordinates[key] - this.planet.size - 1;
         copyCoordinates[key] = 0 + dif;
       } else if (copyCoordinates[key] < 0) {
-        dif = copyCoordinates[key] - 0;
+        // plus one added to the difference to align the calculation to starting from zero
+        dif = copyCoordinates[key] - 0 + 1;
         copyCoordinates[key] = this.planet.size + dif;
       }
     });
