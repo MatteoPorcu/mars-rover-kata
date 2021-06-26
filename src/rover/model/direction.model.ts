@@ -2,7 +2,7 @@ import {
   BehaviorMoveConfigModel,
   CommandConfigModel,
 } from '../../common/model/planet-config.model';
-import { Move } from './command.model';
+import { CommandEnum, Move } from './command.model';
 
 export enum DirectionEnum {
   NORTH = 'N',
@@ -21,12 +21,17 @@ export enum BehaviorTypeEnum {
   DECREASE = 1,
 }
 
-export class BehaviorDirectionModel extends CommandConfigModel {
+export class BehaviorDirectionModel implements CommandConfigModel {
+  type: CommandEnum;
+  direction?: BehaviorTypeEnum;
+  cardinal?: DirectionEnum;
   function?:
     | typeof Move.prototype.increaseCoordinate
     | typeof Move.prototype.decreaseCoordinate;
 }
 
-export class DirectionModel extends BehaviorMoveConfigModel {
+export class DirectionModel implements BehaviorMoveConfigModel {
+  cardinal: DirectionEnum;
+  axis: AxisEnum;
   command: BehaviorDirectionModel[];
 }
