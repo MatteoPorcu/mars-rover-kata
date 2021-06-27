@@ -1,4 +1,4 @@
-import { classToClass } from 'class-transformer';
+import { classToClass, Exclude, Expose } from 'class-transformer';
 import { BehaviorMoveConfigModel } from '../../common/model/planet-config.model';
 import { Move, MoveCommand, TurnCommand, CommandEnum } from './command.model';
 import { CoordinatesModel } from './coordinates.model';
@@ -9,10 +9,15 @@ import {
 } from './direction.model';
 
 export class RoverModel extends Move {
+  @Exclude()
   private _currentCoordinates: CoordinatesModel;
+  @Exclude()
   private _currentDirection: DirectionModel;
+  @Exclude()
   protected _directionsBehavior: DirectionModel[] = [];
+  @Exclude()
   private _behaviorMoveConfig: BehaviorMoveConfigModel[];
+  @Exclude()
   private _currentStepMove: CoordinatesModel;
 
   constructor(
@@ -29,12 +34,14 @@ export class RoverModel extends Move {
     this.populateCurrentDirection(direction);
   }
 
+  @Expose({ name: 'currentCoordinates' })
   get currentCoordinates(): CoordinatesModel {
     return this._currentCoordinates;
   }
   set currentCoordinates(value: CoordinatesModel) {
     this._currentCoordinates = value;
   }
+  @Expose({ name: 'currentDirection' })
   get currentDirection(): DirectionModel {
     return this._currentDirection;
   }

@@ -17,8 +17,6 @@ export class PlanetRenderService {
 
   constructor(private planetConfigService: PlanetConfigService) {
     this.populateObstacles();
-    // this.populateRover({ x: 3, y: 2 }, DirectionEnum.WEST, { x: 3, y: 3 });
-    // console.log(this.rover.currentDirection);
     // this.move(CommandEnum.BACKWARD);
     // this.move(CommandEnum.TURN_LEFT);
   }
