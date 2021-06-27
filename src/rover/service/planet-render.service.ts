@@ -77,7 +77,7 @@ export class PlanetRenderService {
   }
 
   move(moveCommand: CommandEnum) {
-    if (this.checkRoverInstance()){
+    if (this.checkRoverInstance()) {
       switch (moveCommand) {
         case CommandEnum.FORWARD:
         case CommandEnum.BACKWARD: {

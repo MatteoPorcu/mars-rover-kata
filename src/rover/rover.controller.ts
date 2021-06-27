@@ -15,11 +15,11 @@ import { RoverModel } from './model/rover.model';
 import { classToPlain } from 'class-transformer';
 import { ApiBody, ApiOkResponse } from '@nestjs/swagger';
 import { CommandsDto } from './model/dto/commands.dto';
-import { CommandEnum } from "./model/command.model";
+import { CommandEnum } from './model/command.model';
 
 @Controller('rover')
 export class RoverController {
-  constructor(private planetRenderService: PlanetRenderService) { }
+  constructor(private planetRenderService: PlanetRenderService) {}
 
   @UseInterceptors(ClassSerializerInterceptor)
   @ApiBody({ type: RoverDto })

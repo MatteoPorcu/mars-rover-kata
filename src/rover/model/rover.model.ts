@@ -1,12 +1,11 @@
 import { classToClass, Exclude, Expose, Transform } from 'class-transformer';
-import { ValidateNested } from 'class-validator';
 import { BehaviorMoveConfigModel } from '../../common/model/planet-config.model';
-import { Move, MoveCommand, TurnCommand, CommandEnum } from './command.model';
+import { CommandEnum, Move, MoveCommand, TurnCommand } from './command.model';
 import { CoordinatesModel } from './coordinates.model';
 import {
+  BehaviorDirectionModel,
   DirectionEnum,
   DirectionModel,
-  BehaviorDirectionModel,
 } from './direction.model';
 
 export class RoverModel extends Move {
