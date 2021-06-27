@@ -19,12 +19,15 @@ export class RoverModel extends Move {
   private _behaviorMoveConfig: BehaviorMoveConfigModel[];
   @Exclude()
   private _currentStepMove: CoordinatesModel;
+  @Exclude()
+  private _guid: string;
 
   constructor(
     coordinates: CoordinatesModel,
     direction: DirectionEnum,
     behaviorMoveConfig: BehaviorMoveConfigModel[],
     stepMove: CoordinatesModel = { x: 1, y: 1 },
+    guid: string,
   ) {
     super();
     this._behaviorMoveConfig = behaviorMoveConfig;
@@ -32,6 +35,7 @@ export class RoverModel extends Move {
     this.currentStepMove = stepMove;
     this.populateDirectionsBehavior();
     this.populateCurrentDirection(direction);
+    this.guid = guid;
   }
 
   @Expose({ name: 'currentCoordinates' })
@@ -55,14 +59,21 @@ export class RoverModel extends Move {
   set directionsBehavior(value: DirectionModel[]) {
     this._directionsBehavior = value;
   }
-  public get currentStepMove(): CoordinatesModel {
+  get currentStepMove(): CoordinatesModel {
     return this._currentStepMove;
   }
-  public set currentStepMove(value: CoordinatesModel) {
+  set currentStepMove(value: CoordinatesModel) {
     this._currentStepMove = value;
   }
   get behaviorMoveConfig(): BehaviorMoveConfigModel[] {
     return this._behaviorMoveConfig;
+  }
+  @Expose({ name: 'guid' })
+  public get guid(): string {
+    return this._guid;
+  }
+  public set guid(value: string) {
+    this._guid = value;
   }
 
   private populateDirectionsBehavior(): DirectionModel[] {

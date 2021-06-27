@@ -61,6 +61,7 @@ export class PlanetRenderService {
       direction,
       this.planet.behaviorMove,
       stepMove,
+      this.newGuid(),
     );
   }
 
@@ -129,5 +130,16 @@ export class PlanetRenderService {
         `The rover has not landed yet, please re-launch it to Mars`,
       );
     }
+  }
+
+  newGuid() {
+    return 'xxxxxxxx-xxxx-xxxx-yxxx-xxxxxxxxxxxx'.replace(
+      /[xy]/g,
+      function (c) {
+        const r = (Math.random() * 16) | 0,
+          v = c == 'x' ? r : (r & 0x3) | 0x8;
+        return v.toString(16);
+      },
+    );
   }
 }
