@@ -7,6 +7,7 @@ export enum EnvironmentType {
 }
 
 export class CommonConfigModel {
+  @IsDefined()
   env: EnvironmentType;
 
   @IsDefined()

@@ -27,5 +27,3 @@ export abstract class ManagerConfigService<T = any> {
 
   protected abstract createConfiguration(): T;
 }
-
-
