@@ -17,8 +17,6 @@ export class PlanetRenderService {
 
   constructor(private planetConfigService: PlanetConfigService) {
     this.populateObstacles();
-    // this.move(CommandEnum.BACKWARD);
-    // this.move(CommandEnum.TURN_LEFT);
   }
 
   get rover(): RoverModel {
@@ -66,29 +64,42 @@ export class PlanetRenderService {
     );
   }
 
+  splitStringToCommand(commands: string): CommandEnum[] {
+    const commandList: string[] = [...commands];
+    const commandEnum = Object.values(CommandEnum);
+    const hasInvalidCommand = !commandList.every((command: CommandEnum) => {
+      return commandEnum.includes(command);
+    });
+    if (hasInvalidCommand) {
+      throw new Error(`Invalid command to move the Rover`);
+    }
+    return commandList as CommandEnum[];
+  }
+
   move(moveCommand: CommandEnum) {
-    switch (moveCommand) {
-      case CommandEnum.FORWARD:
-      case CommandEnum.BACKWARD: {
-        const predictiveMove = this.rover.moveByDirection(moveCommand);
-        if (!this.hasObstacles(predictiveMove)){
-          this.rover.currentCoordinates = this.limitPlanetSize(predictiveMove);
-        } else {
-          throw new Error(
-            `Obstacle detected in position x: ${predictiveMove.x}, y: ${predictiveMove.y}`,
-          );
+    if (this.checkRoverInstance()){
+      switch (moveCommand) {
+        case CommandEnum.FORWARD:
+        case CommandEnum.BACKWARD: {
+          const predictiveMove = this.rover.moveByDirection(moveCommand);
+          if (!this.hasObstacles(predictiveMove)) {
+            this.rover.currentCoordinates =
+              this.limitPlanetSize(predictiveMove);
+          } else {
+            throw new Error(
+              `Obstacle detected in position x: ${predictiveMove.x}, y: ${predictiveMove.y}`,
+            );
+          }
+          break;
         }
-        console.log('limitPlanet', this.rover.currentCoordinates);
-        break;
-      }
-      case CommandEnum.TURN_RIGHT:
-      case CommandEnum.TURN_LEFT: {
-        this.rover.changeDirection(moveCommand);
-        console.log('changeDirection', this.rover.currentDirection);
-        break;
-      }
-      default: {
-        throw new Error('error, invalid command');
+        case CommandEnum.TURN_RIGHT:
+        case CommandEnum.TURN_LEFT: {
+          this.rover.changeDirection(moveCommand);
+          break;
+        }
+        default: {
+          throw new Error('error, invalid command');
+        }
       }
     }
   }
@@ -108,5 +119,15 @@ export class PlanetRenderService {
       }
     });
     return copyCoordinates;
+  }
+
+  checkRoverInstance(): boolean {
+    if (this.rover) {
+      return true;
+    } else {
+      throw new Error(
+        `The rover has not landed yet, please re-launch it to Mars`,
+      );
+    }
   }
 }

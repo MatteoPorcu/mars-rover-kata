@@ -1,4 +1,5 @@
-import { classToClass, Exclude, Expose } from 'class-transformer';
+import { classToClass, Exclude, Expose, Transform } from 'class-transformer';
+import { ValidateNested } from 'class-validator';
 import { BehaviorMoveConfigModel } from '../../common/model/planet-config.model';
 import { Move, MoveCommand, TurnCommand, CommandEnum } from './command.model';
 import { CoordinatesModel } from './coordinates.model';
@@ -41,6 +42,7 @@ export class RoverModel extends Move {
   set currentCoordinates(value: CoordinatesModel) {
     this._currentCoordinates = value;
   }
+  @Transform(({ value }) => value['cardinal'], { toPlainOnly: true })
   @Expose({ name: 'currentDirection' })
   get currentDirection(): DirectionModel {
     return this._currentDirection;
