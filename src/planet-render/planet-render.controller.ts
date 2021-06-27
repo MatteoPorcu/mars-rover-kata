@@ -18,7 +18,7 @@ import { CommandsDto } from './model/dto/commands.dto';
 import { CommandEnum } from './model/command.model';
 
 @Controller('rover')
-export class RoverController {
+export class PlanetRenderController {
   constructor(private planetRenderService: PlanetRenderService) {}
 
   @UseInterceptors(ClassSerializerInterceptor)

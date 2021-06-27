@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { getConfiguration } from '../config/configuration';
 import { AppConfigService } from './app-config.service';
-import { RoverModule } from './rover/rover.module';
+import { PlanetRenderModule } from './planet-render/planet-render.module';
 
 @Module({
   imports: [
@@ -10,7 +10,7 @@ import { RoverModule } from './rover/rover.module';
       load: [getConfiguration('common')],
       isGlobal: true,
     }),
-    RoverModule,
+    PlanetRenderModule,
   ],
   controllers: [],
   providers: [AppConfigService],

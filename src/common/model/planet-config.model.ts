@@ -1,11 +1,11 @@
 import { Type } from 'class-transformer';
 import { IsDefined, IsEnum, IsOptional, ValidateNested } from 'class-validator';
-import { CommandEnum } from '../../rover/model/command.model';
+import { CommandEnum } from '../../planet-render/model/command.model';
 import {
   AxisEnum,
   BehaviorTypeEnum,
   DirectionEnum,
-} from '../../rover/model/direction.model';
+} from '../../planet-render/model/direction.model';
 
 export class PlanetConfigModel {
   @IsDefined()
