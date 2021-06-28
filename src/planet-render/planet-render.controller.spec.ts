@@ -13,6 +13,7 @@ import { PlanetRenderService } from './service/planet-render.service';
 describe('PlanetRenderController', () => {
   let controller: PlanetRenderController;
   let planetRenderService: PlanetRenderService;
+  let obstacles: ObstaclesModel[];
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -23,6 +24,18 @@ describe('PlanetRenderController', () => {
 
     controller = module.get<PlanetRenderController>(PlanetRenderController);
     planetRenderService = module.get<PlanetRenderService>(PlanetRenderService);
+    obstacles = [
+      { x: 10, y: 1 },
+      { x: 6, y: 2 },
+      { x: 0, y: 9 },
+      { x: 0, y: 10 },
+      { x: 1, y: 5 },
+      { x: 5, y: 2 },
+      { x: 0, y: 1 },
+      { x: 3, y: 1 },
+      { x: 2, y: 1 },
+      { x: 1, y: 1 },
+    ] as ObstaclesModel[];
   });
 
   it('should be defined', () => {
@@ -46,23 +59,13 @@ describe('PlanetRenderController', () => {
 
   describe('rover', () => {
     it('should call rover api to landing the rover but in the past coordinate there are an obstacles', async () => {
-      planetRenderService.obstacles = [
-        { x: 10, y: 1 },
-        { x: 6, y: 2 },
-        { x: 0, y: 9 },
-        { x: 0, y: 10 },
-        { x: 1, y: 5 },
-        { x: 5, y: 2 },
-        { x: 0, y: 1 },
-        { x: 3, y: 1 },
-        { x: 2, y: 1 },
-        { x: 1, y: 1 },
-      ] as ObstaclesModel[];
+      planetRenderService.obstacles = obstacles;
 
       const roverDto: RoverDto = {
         coordinates: { x: 0, y: 10 },
         direction: DirectionEnum.NORTH,
       };
+      expect.assertions(1);
       try {
         await controller.release(roverDto);
       } catch (error) {
@@ -82,18 +85,7 @@ describe('PlanetRenderController', () => {
         roverDto.coordinates,
         roverDto.direction,
       );
-      planetRenderService.obstacles = [
-        { x: 10, y: 1 },
-        { x: 6, y: 2 },
-        { x: 0, y: 9 },
-        { x: 0, y: 10 },
-        { x: 1, y: 5 },
-        { x: 5, y: 2 },
-        { x: 0, y: 1 },
-        { x: 3, y: 1 },
-        { x: 2, y: 1 },
-        { x: 1, y: 1 },
-      ] as ObstaclesModel[];
+      planetRenderService.obstacles = obstacles;
 
       const roverMoved = await controller.commands(commandsDto);
       expect(roverMoved.data).toStrictEqual({
@@ -110,24 +102,35 @@ describe('PlanetRenderController', () => {
         coordinates: { x: 0, y: 4 },
         direction: DirectionEnum.NORTH,
       };
-      const commandsDto: CommandsDto = { command: 'FFFBBLFFRBBRFFFF' };
+      const commandsDto: CommandsDto = { command: 'BBBRFF' };
       planetRenderService.populateRover(
         roverDto.coordinates,
         roverDto.direction,
       );
-      planetRenderService.obstacles = [
-        { x: 10, y: 1 },
-        { x: 6, y: 2 },
-        { x: 0, y: 9 },
-        { x: 0, y: 10 },
-        { x: 0, y: 5 },
-        { x: 5, y: 2 },
-        { x: 0, y: 1 },
-        { x: 3, y: 1 },
-        { x: 2, y: 1 },
-        { x: 1, y: 1 },
-      ] as ObstaclesModel[];
+      planetRenderService.obstacles = obstacles;
+      expect.assertions(1);
+      try {
+        await controller.commands(commandsDto);
+      } catch (error) {
+        console.log(error);
+        expect(error.status).toBe(HttpStatus.BAD_REQUEST);
+      }
+    });
+  });
 
+  describe('rover/commands', () => {
+    it('should call rover api to move the rover, in this case there are a command invalid', async () => {
+      const roverDto: RoverDto = {
+        coordinates: { x: 0, y: 4 },
+        direction: DirectionEnum.NORTH,
+      };
+      const commandsDto: CommandsDto = { command: 'FFSFRBBRFFFF' };
+      planetRenderService.populateRover(
+        roverDto.coordinates,
+        roverDto.direction,
+      );
+      planetRenderService.obstacles = obstacles;
+      expect.assertions(1);
       try {
         await controller.commands(commandsDto);
       } catch (error) {
@@ -139,6 +142,7 @@ describe('PlanetRenderController', () => {
   describe('rover/commands', () => {
     it('should call rover api to move the rover, in this case the rover has not landed yet', async () => {
       const commandsDto: CommandsDto = { command: 'FFFBBLFFRBBRFFFF' };
+      expect.assertions(1);
       try {
         await controller.commands(commandsDto);
       } catch (error) {
