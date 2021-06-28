@@ -23,7 +23,7 @@ export class RoverModel extends Move {
   private _guid: string;
 
   constructor(
-    coordinates: CoordinatesModel,
+    coordinates: CoordinatesModel = { x: 0, y: 0 },
     direction: DirectionEnum,
     behaviorMoveConfig: BehaviorMoveConfigModel[],
     stepMove: CoordinatesModel = { x: 1, y: 1 },

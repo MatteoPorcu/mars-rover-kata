@@ -5,7 +5,7 @@ export class ObstaclesModel implements CoordinatesModel {
   x: number;
   y: number;
   @Exclude()
-  max: number;
+  max?: number;
 
   constructor(max: number) {
     this.max = max;

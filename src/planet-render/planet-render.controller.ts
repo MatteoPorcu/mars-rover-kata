@@ -8,14 +8,14 @@ import {
   Post,
   UseInterceptors,
 } from '@nestjs/common';
-import { RestBaseResponse } from '../common/model/rest.model';
-import { RoverDto } from './model/dto/rover.dto';
-import { PlanetRenderService } from './service/planet-render.service';
-import { RoverModel } from './model/rover.model';
-import { classToPlain } from 'class-transformer';
 import { ApiBody, ApiOkResponse } from '@nestjs/swagger';
-import { CommandsDto } from './model/dto/commands.dto';
+import { classToPlain } from 'class-transformer';
+import { RestBaseResponse } from '../common/model/rest.model';
 import { CommandEnum } from './model/command.model';
+import { CommandsDto } from './model/dto/commands.dto';
+import { RoverDto } from './model/dto/rover.dto';
+import { RoverModel } from './model/rover.model';
+import { PlanetRenderService } from './service/planet-render.service';
 
 @Controller('rover')
 export class PlanetRenderController {
@@ -29,28 +29,30 @@ export class PlanetRenderController {
   async release(
     @Body() roverDto: RoverDto,
   ): Promise<RestBaseResponse<RoverModel>> {
+    let roverLanded: RoverModel;
     try {
-      this.planetRenderService.populateRover(
+      roverLanded = this.planetRenderService.populateRover(
         roverDto.coordinates,
         roverDto.direction,
       );
-      const response: RestBaseResponse<RoverModel> = {
-        message: `the Rover landed successfully`,
-        data: <RoverModel>classToPlain(this.planetRenderService.rover),
-      };
-      return response;
     } catch (error) {
       throw new HttpException(
         <RestBaseResponse<void>>{ message: error.message },
         HttpStatus.BAD_REQUEST,
       );
     }
+    const response: RestBaseResponse<RoverModel> = {
+      message: `the Rover landed successfully`,
+      data: roverLanded,
+    };
+    return response;
   }
 
   @Post('commands')
   async commands(
     @Body() commands: CommandsDto,
   ): Promise<RestBaseResponse<RoverModel>> {
+    let response: RestBaseResponse<RoverModel>;
     try {
       const commandList: CommandEnum[] =
         this.planetRenderService.splitStringToCommand(commands.command);
@@ -58,11 +60,10 @@ export class PlanetRenderController {
         this.planetRenderService.move(singleCommand);
       });
       const rover = <RoverModel>classToPlain(this.planetRenderService.rover);
-      const response: RestBaseResponse<RoverModel> = {
+      response = {
         message: `the Rover moved with succesfully, current coordinate x: ${rover.currentCoordinates.x}, y: ${rover.currentCoordinates.y}, direction: ${rover.currentDirection.cardinal}`,
         data: <RoverModel>classToPlain(this.planetRenderService.rover),
       };
-      return response;
     } catch (error) {
       throw new HttpException(
         <RestBaseResponse<RoverModel>>{
@@ -72,5 +73,6 @@ export class PlanetRenderController {
         HttpStatus.BAD_REQUEST,
       );
     }
+    return response;
   }
 }

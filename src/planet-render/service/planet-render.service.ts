@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { deserialize, serialize } from 'class-transformer';
+import { classToPlain, deserialize, serialize } from 'class-transformer';
 import { PlanetConfigModel } from '../../common/model/planet-config.model';
 import { CommandEnum } from '../model/command.model';
 import { CoordinatesModel } from '../model/coordinates.model';
@@ -16,7 +16,7 @@ export class PlanetRenderService {
   private _obstacles: ObstaclesModel[] = [];
 
   constructor(private planetConfigService: PlanetConfigService) {
-    this.populateObstacles();
+    this.populateRandomObstacles();
   }
 
   get rover(): RoverModel {
@@ -31,7 +31,11 @@ export class PlanetRenderService {
     return this._obstacles;
   }
 
-  populateObstacles() {
+  set obstacles(value: ObstaclesModel[]) {
+    this._obstacles = value;
+  }
+
+  populateRandomObstacles() {
     const uniquePositions = new Set();
     while (uniquePositions.size < this.planet.obstaclesNumber) {
       uniquePositions.add(
@@ -55,7 +59,7 @@ export class PlanetRenderService {
     coordinates: CoordinatesModel,
     direction: DirectionEnum,
     stepMove?: CoordinatesModel,
-  ) {
+  ): RoverModel {
     this._rover = new RoverModel(
       coordinates,
       direction,
@@ -63,6 +67,7 @@ export class PlanetRenderService {
       stepMove,
       this.newGuid(),
     );
+    return <RoverModel>classToPlain(this.rover);
   }
 
   splitStringToCommand(commands: string): CommandEnum[] {
