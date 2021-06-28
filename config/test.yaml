@@ -1,10 +1,6 @@
 common:
-  env: 'develop'
+  env: 'test'
   port: 3000
-jwt:
-  secret_key: 'BOMA2F73GIHHVOYK7I42'
-  signOptions:
-    expiresIn: '3600s'
 planet:
   size: 10
   obstaclesNumber: 10
