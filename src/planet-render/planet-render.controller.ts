@@ -48,6 +48,10 @@ export class PlanetRenderController {
     return response;
   }
 
+  @UseInterceptors(ClassSerializerInterceptor)
+  @ApiBody({ type: CommandsDto })
+  @ApiOkResponse({ content: { 'application/json': {} } })
+  @HttpCode(HttpStatus.OK)
   @Post('commands')
   async commands(
     @Body() commands: CommandsDto,
