@@ -77,14 +77,25 @@ export class PlanetRenderService {
     direction: DirectionEnum,
     stepMove?: CoordinatesModel,
   ): RoverModel {
-    this._rover = new RoverModel(
-      coordinates,
-      direction,
-      this.planet.behaviorMove,
-      stepMove,
-      this.newGuid(),
-    );
+    if (!this.hasObstacles(coordinates)) {
+      this._rover = new RoverModel(
+        coordinates,
+        direction,
+        this.planet.behaviorMove,
+        stepMove,
+        this.newGuid(),
+      );
+    } else {
+      this.cleanRoverInstance();
+      throw new Error(
+        `it is impossible to land the Rover, in coordinates {x: ${coordinates.x}, y: ${coordinates.y}} there are an obstacles`,
+      );
+    }
     return <RoverModel>classToPlain(this.rover);
+  }
+
+  private cleanRoverInstance() {
+    this._rover = null;
   }
 
   /**

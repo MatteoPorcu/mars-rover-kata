@@ -44,6 +44,33 @@ describe('PlanetRenderController', () => {
     });
   });
 
+  describe('rover', () => {
+    it('should call rover api to landing the rover but in the past coordinate there are an obstacles', async () => {
+      planetRenderService.obstacles = [
+        { x: 10, y: 1 },
+        { x: 6, y: 2 },
+        { x: 0, y: 9 },
+        { x: 0, y: 10 },
+        { x: 1, y: 5 },
+        { x: 5, y: 2 },
+        { x: 0, y: 1 },
+        { x: 3, y: 1 },
+        { x: 2, y: 1 },
+        { x: 1, y: 1 },
+      ] as ObstaclesModel[];
+
+      const roverDto: RoverDto = {
+        coordinates: { x: 0, y: 10 },
+        direction: DirectionEnum.NORTH,
+      };
+      try {
+        await controller.release(roverDto);
+      } catch (error) {
+        expect(error.status).toBe(HttpStatus.BAD_REQUEST);
+      }
+    });
+  });
+
   describe('rover/commands', () => {
     it('should call rover api to move the rover', async () => {
       const roverDto: RoverDto = {
@@ -103,7 +130,9 @@ describe('PlanetRenderController', () => {
 
       try {
         await controller.commands(commandsDto);
-      } catch (error) {}
+      } catch (error) {
+        expect(error.status).toBe(HttpStatus.BAD_REQUEST);
+      }
     });
   });
 
