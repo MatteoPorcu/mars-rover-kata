@@ -112,7 +112,6 @@ describe('PlanetRenderController', () => {
       try {
         await controller.commands(commandsDto);
       } catch (error) {
-        console.log(error);
         expect(error.status).toBe(HttpStatus.BAD_REQUEST);
       }
     });
