@@ -65,7 +65,7 @@ export class PlanetRenderController {
       });
       const rover = <RoverModel>classToPlain(this.planetRenderService.rover);
       response = {
-        message: `the Rover moved with succesfully, current coordinate x: ${rover.currentCoordinates.x}, y: ${rover.currentCoordinates.y}, direction: ${rover.currentDirection.cardinal}`,
+        message: `the Rover moved with succesfully, current coordinate x: ${rover.currentCoordinates.x}, y: ${rover.currentCoordinates.y}, direction: ${rover.currentDirection}`,
         data: <RoverModel>classToPlain(this.planetRenderService.rover),
       };
     } catch (error) {
