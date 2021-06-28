@@ -76,6 +76,10 @@ export class RoverModel extends Move {
     this._guid = value;
   }
 
+  /**
+   * method that populates rover movement behavior with a configuration option it takes from the constructor
+   * @returns list of DirectionModel
+   */
   private populateDirectionsBehavior(): DirectionModel[] {
     this.directionsBehavior = classToClass(this.behaviorMoveConfig);
     this.directionsBehavior.forEach((behaviorCommand) => {
@@ -89,12 +93,21 @@ export class RoverModel extends Move {
     return this.directionsBehavior;
   }
 
+  /**
+   * method that populates rover current direction with a behavior command list
+   * @param direction is a parameter that contain a cardinal direction
+   */
   private populateCurrentDirection(direction: DirectionEnum) {
     this.currentDirection = this.directionsBehavior.find((directionConfig) => {
       return directionConfig.cardinal === direction;
     });
   }
 
+  /**
+   * method that populates the predictive coordinates in base to the passed command
+   * @param moveCommand is a parameter that contain a command string 'F' or 'B'
+   * @returns predictiveCoordinate of type CoordinatesModel ({x: number, y: number})
+   */
   moveByDirection(moveCommand: MoveCommand): CoordinatesModel {
     const predictiveCoordinate: CoordinatesModel = {
       ...this.currentCoordinates,
@@ -115,6 +128,10 @@ export class RoverModel extends Move {
     return point - stepMove;
   }
 
+  /**
+   * method that populate the rover current direction in base to the passed command
+   * @param moveCommand is a parameter that contain a command string 'L' or 'R'
+   */
   changeDirection(moveCommand: TurnCommand) {
     const currentCommand = this.retrieveCurrentCommand(moveCommand);
     this.populateCurrentDirection(currentCommand.cardinal);

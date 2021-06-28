@@ -58,6 +58,14 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
+## Swagger
+
+the api are exposed in the Swagger endpoint
+
+```
+http://localhost:3000/swagger
+```
+
 ## Create Module
 
 ```bash

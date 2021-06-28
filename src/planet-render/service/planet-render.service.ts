@@ -35,6 +35,11 @@ export class PlanetRenderService {
     this._obstacles = value;
   }
 
+  /**
+   * method that populates the planet service with a random list of obstacles,
+   * the obstacles before being assigned to the attribute have been assigned to the Sets object 
+   * to make the list of obstacles unique
+   */
   populateRandomObstacles() {
     const uniquePositions = new Set();
     while (uniquePositions.size < this.planet.obstaclesNumber) {
@@ -48,6 +53,11 @@ export class PlanetRenderService {
     });
   }
 
+  /**
+   * method that check if the past coordinates belong to the list of obstacles
+   * @param coordinate parameter with type CoordinatesModel
+   * @returns boolean true or false in case the past coordinates belong to the list of obstacles
+   */
   hasObstacles(coordinate: CoordinatesModel): boolean {
     const currentObstacle = this.obstacles.find((obstacle: ObstaclesModel) => {
       return obstacle.x === coordinate.x && obstacle.y === coordinate.y;
@@ -55,6 +65,13 @@ export class PlanetRenderService {
     return currentObstacle ? true : false;
   }
 
+  /**
+   * method that populate the rover instance
+   * @param coordinates parameter of type CoordinatesModel {x: number, y: number}
+   * @param direction parameter of type DirectionEnum, string of cardinals
+   * @param stepMove parameter of type CoordinatesModel {x: number, y: number}
+   * @returns RoverModel transformed by class-transform
+   */
   populateRover(
     coordinates: CoordinatesModel,
     direction: DirectionEnum,
@@ -70,6 +87,11 @@ export class PlanetRenderService {
     return <RoverModel>classToPlain(this.rover);
   }
 
+  /**
+   * method that split a screen and generate a list of CommandEnum
+   * @param commands parameter of type string, is a string char of commands
+   * @returns CommandEnum list validated
+   */
   splitStringToCommand(commands: string): CommandEnum[] {
     const commandList: string[] = [...commands];
     const commandEnum = Object.values(CommandEnum);
@@ -82,6 +104,11 @@ export class PlanetRenderService {
     return commandList as CommandEnum[];
   }
 
+  /**
+   * method that, in base a past parameter, launch moveByDirection or chandeDirection functionality
+   * (with obstacles detection)
+   * @param moveCommand parameter of type CommandEnum
+   */
   move(moveCommand: CommandEnum) {
     if (this.checkRoverInstance()) {
       switch (moveCommand) {
@@ -110,6 +137,11 @@ export class PlanetRenderService {
     }
   }
 
+  /**
+   * method that check the limit size of planet
+   * @param coordinates parameter with type CoordinatesModel
+   * @returns coordinates edited using the limit of planet, type CoordinatesModel ({x: number, y: number})
+   */
   limitPlanetSize(coordinates: CoordinatesModel): CoordinatesModel {
     let dif: number;
     const copyCoordinates: CoordinatesModel = { ...coordinates };
@@ -127,6 +159,10 @@ export class PlanetRenderService {
     return copyCoordinates;
   }
 
+  /**
+   * method that check if the rover instance is populated
+   * @returns boolean in base at the presence of the rover instance
+   */
   checkRoverInstance(): boolean {
     if (this.rover) {
       return true;
@@ -137,7 +173,11 @@ export class PlanetRenderService {
     }
   }
 
-  newGuid() {
+  /**
+   * method that generate random guid
+   * @returns random string
+   */
+  newGuid(): string {
     return 'xxxxxxxx-xxxx-xxxx-yxxx-xxxxxxxxxxxx'.replace(
       /[xy]/g,
       function (c) {
