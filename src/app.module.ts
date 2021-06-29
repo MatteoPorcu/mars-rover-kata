@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { getConfiguration } from '../config/configuration';
+import { getConfiguration } from './config/configuration';
 import { AppConfigService } from './app-config.service';
 import { PlanetRenderModule } from './planet-render/planet-render.module';
 

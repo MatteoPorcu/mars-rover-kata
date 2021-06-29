@@ -1,7 +1,7 @@
 import { HttpStatus } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
-import { getConfiguration } from '../../config/configuration';
+import { getConfiguration } from '../config/configuration';
 import { DirectionEnum } from './model/direction.model';
 import { CommandsDto } from './model/dto/commands.dto';
 import { RoverDto } from './model/dto/rover.dto';
