@@ -82,6 +82,12 @@ export class PlanetRenderService {
     direction: DirectionEnum,
     stepMove?: CoordinatesModel,
   ): RoverModel {
+    if (this.outOfOrbit(coordinates)) {
+      this.cleanRoverInstance();
+      throw new Error(
+        `it is impossible to land the Rover, in coordinates {x: ${coordinates.x}, y: ${coordinates.y}}, the rover is out of the orbit`,
+      );
+    }
     if (!this.hasObstacles(coordinates)) {
       this._rover = new RoverModel(
         coordinates,
@@ -173,6 +179,21 @@ export class PlanetRenderService {
       }
     });
     return copyCoordinates;
+  }
+
+  /**
+   * method that check if the rover miss the planet coordinates
+   * @param {CoordinatesModel} [coordinates]
+   * @returns {boolean}
+   */
+  outOfOrbit(coordinates: CoordinatesModel): boolean {
+    let outSize: boolean;
+    Object.keys(coordinates).forEach((point: string) => {
+      if (coordinates[point] > this.planet.size || coordinates[point] < 0) {
+        outSize = true;
+      }
+    });
+    return outSize;
   }
 
   /**

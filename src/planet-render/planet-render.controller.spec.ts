@@ -74,6 +74,23 @@ describe('PlanetRenderController', () => {
     });
   });
 
+  describe('rover', () => {
+    it('should call rover api to landing the rover but the past coordinates are out of orbit', async () => {
+      planetRenderService.obstacles = obstacles;
+
+      const roverDto: RoverDto = {
+        coordinates: { x: 0, y: 11 },
+        direction: DirectionEnum.NORTH,
+      };
+      expect.assertions(1);
+      try {
+        await controller.release(roverDto);
+      } catch (error) {
+        expect(error.status).toBe(HttpStatus.BAD_REQUEST);
+      }
+    });
+  });
+
   describe('rover/commands', () => {
     it('should call rover api to move the rover', async () => {
       const roverDto: RoverDto = {
