@@ -21,7 +21,15 @@ export class RoverModel extends Move {
   private _currentStepMove: CoordinatesModel;
   @Exclude()
   private _guid: string;
-
+  /**
+   * constructor expects the configurations and launches the random population of obstacles
+   * @constructor
+   * @param {CoordinatesModel} [coordinates] - default value {x:0, y:0}
+   * @param {DirectionEnum} [direction]
+   * @param {BehaviorMoveConfigModel[]} [behaviorMoveConfig]
+   * @param {CoordinatesModel} [stepMove] - default value {x:1, y:1}
+   * @param {string} [guid]
+   */
   constructor(
     coordinates: CoordinatesModel = { x: 0, y: 0 },
     direction: DirectionEnum,
@@ -78,7 +86,7 @@ export class RoverModel extends Move {
 
   /**
    * method that populates rover movement behavior with a configuration option it takes from the constructor
-   * @returns list of DirectionModel
+   * @returns {DirectionModel[]}
    */
   private populateDirectionsBehavior(): DirectionModel[] {
     this.directionsBehavior = classToClass(this.behaviorMoveConfig);
@@ -95,7 +103,7 @@ export class RoverModel extends Move {
 
   /**
    * method that populates rover current direction with a behavior command list
-   * @param direction is a parameter that contain a cardinal direction
+   * @param {DirectionEnum} [direction] is a parameter that contain a cardinal direction
    */
   private populateCurrentDirection(direction: DirectionEnum) {
     this.currentDirection = this.directionsBehavior.find((directionConfig) => {
@@ -105,8 +113,8 @@ export class RoverModel extends Move {
 
   /**
    * method that populates the predictive coordinates in base to the passed command
-   * @param moveCommand is a parameter that contain a command string 'F' or 'B'
-   * @returns predictiveCoordinate of type CoordinatesModel ({x: number, y: number})
+   * @param {MoveCommand} [moveCommand] is a parameter that contain a command string 'F' or 'B'
+   * @returns {CoordinatesModel} predictiveCoordinate of type CoordinatesModel ({x: number, y: number})
    */
   moveByDirection(moveCommand: MoveCommand): CoordinatesModel {
     const predictiveCoordinate: CoordinatesModel = {
@@ -130,13 +138,18 @@ export class RoverModel extends Move {
 
   /**
    * method that populate the rover current direction in base to the passed command
-   * @param moveCommand is a parameter that contain a command string 'L' or 'R'
+   * @param {TurnCommand} [moveCommand] is a parameter that contain a command string 'L' or 'R'
    */
   changeDirection(moveCommand: TurnCommand) {
     const currentCommand = this.retrieveCurrentCommand(moveCommand);
     this.populateCurrentDirection(currentCommand.cardinal);
   }
 
+  /**
+   * method that retrieve the commands of Rover current direction
+   * @param {CommandEnum} [moveCommand]
+   * @returns {BehaviorDirectionModel}
+   */
   retrieveCurrentCommand(moveCommand: CommandEnum): BehaviorDirectionModel {
     return this.currentDirection.command.find((current) => {
       return current.type === moveCommand;
